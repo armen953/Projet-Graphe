@@ -116,6 +116,10 @@ public class Carte {
 
     public Graphe getGraphe() {return graphe;}
     
+    /**
+     * 
+     * @return le graphe modélisant la carte
+     */
     public Graphe getGrapheGrille(){
         int n = this.getTaille();
         for(int i = 1; i <= 3*n; i++){
@@ -157,7 +161,6 @@ public class Carte {
                         }
                     }
                 }
-                
                 else { //si elle est impaire
                     if((i == 3*n-1) && (j == 1)){ //la fichtre case du coin en bas à gauche relié à une seule case
                         this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
@@ -198,5 +201,18 @@ public class Carte {
             }
         }
         return this.graphe;        
+    }
+    
+    public Graphe getGrapheZombie(){
+        int n = this.taille;
+        Graphe zombGraphe = this.getGrapheGrille();
+       
+        //parcours du graphe pour detecter où sont les étoiles
+        for(int i = 1; i <= 3*n; i++){
+            for(int j = 1; j <= n; j++){
+                System.out.println(this.getCase(i, j).getObjetCeleste().getType());
+                }
+            }
+        return zombGraphe;
     }
 }
