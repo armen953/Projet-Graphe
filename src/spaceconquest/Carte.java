@@ -31,7 +31,7 @@ public class Carte {
                 this.cases.put(new Couple(i,j), new Case());
             }
         }
-        this.graphe = new Graphe(cases.size());
+        this.graphe = new Graphe(cases.size());//Creation du graphe de la carte
         this.caseSelectionnee = null;
     }
     
@@ -210,9 +210,15 @@ public class Carte {
         //parcours du graphe pour detecter où sont les étoiles
         for(int i = 1; i <= 3*n; i++){
             for(int j = 1; j <= n; j++){
-                System.out.println(this.getCase(i, j).getObjetCeleste().getType());
+                if(this.getCase(i, j).getObjetCeleste() != null){
+                    if(this.getCase(i, j).getObjetCeleste().getType() == "etoile"){
+                        zombGraphe.isolerSommet(n*(i-1)+j);
+                    }
                 }
             }
+        }
         return zombGraphe;
     }
+    
+    
 }
