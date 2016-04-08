@@ -220,5 +220,68 @@ public class Carte {
         return zombGraphe;
     }
     
+    /**
+     * 
+     * @return le graphe arrangé des licornes (valeur des cases arrangés sur les cases contenant un asteroides)
+     */
+    public Graphe getGrapheLicorne(){
+        int n = this.taille;
+        Graphe licoGraphe = this.getGrapheGrille();
+        //idem que dans zombGraphe cette fois pour les astéroïdes
+        for(int i = 1; i <= 3*n; i++){
+            for(int j = 1; j <= n; j++){
+                if(this.getCase(i, j).getObjetCeleste() != null){
+                    if(this.getCase(i, j).getObjetCeleste().getType() == "asteroide"){
+                        licoGraphe.modifierMatrice(i, j, 2);//2 pa necessaires pour passer sur ce sommet
+                    }
+                }
+            }
+        }
+        return licoGraphe;
+    }
     
+    /**
+     * Colore toute les cases de al cartes en blanc
+     */
+    public void effacerColoration(){
+        int n = this.taille;
+        for(int i = 1; i <= 3*n; i++){
+            for(int j = 1; j <= n; j++){
+                this.getCase(i, j).setCouleur(Couleur.Blanc);
+             }
+        }
+    }
+    /**
+     * 
+     * @param nSommet num du sommet à transformer
+     * @param tailleGrille taille de la grille considéré (nombre de ligne ou de colonne)
+     * @return c le couple correspondant
+     */
+    public Couple sommetToCouple(int nSommet, int tailleGrille){
+        int i,j;
+        i = nSommet/tailleGrille;
+        if(nSommet%tailleGrille != 0) i+=1; //si on est passé à la ligne suivante
+        j = nSommet%tailleGrille;
+        if(j == 0) j = tailleGrille;
+        Couple c = new Couple(i,j);
+        return c;
+    }
+    
+    public void coloreCase(int i, int j){
+        this.getCase(i, j).setCouleur(Couleur.Vert);
+    }
+    
+    public void colorationMouvement(int i, int j, Graphe g){
+        int n = this.taille;
+        int sommet = n*(i-1)+j;
+        //parcours de la ligne pour trouver les voisins
+        for(int k = 1; k <= 3*n*n; k++){
+            if(g.getMatrice(sommet, k) == 1){
+                //System.out.println("j'ai trouvé un coeff egal à 1");
+                Couple voisin = this.sommetToCouple(k, this.taille);
+                //System.out.println("je colore la case " + voisin);
+                this.coloreCase(voisin.getX(), voisin.getY());
+            }
+        }
+    }
 }
